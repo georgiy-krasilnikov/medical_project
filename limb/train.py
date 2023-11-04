@@ -12,7 +12,7 @@ train_datagen = ImageDataGenerator(
 )
 test_datagen = ImageDataGenerator(rescale=1.0 / 255)
 
-batch_size = 20  # размерность подвыборки
+batch_size = 30  # размерность подвыборки
 img_width, img_height = (
     499,
     499,
@@ -54,7 +54,7 @@ steps_per_epoch = (
 )  # устанавливаем размеры шагом
 validation_steps = test_generator.n // test_generator.batch_size
 callback = ModelCheckpoint(
-    filepath="limb_model.h5", monitor="val_accuracy", save_best_only=True
+    filepath="limb_inception_model2.h5", monitor="val_accuracy", save_best_only=True
 )
 
 model.fit(
@@ -66,6 +66,3 @@ model.fit(
     callbacks=[callback],
 )  # обучение модели
 
-accuracy = model.evaluate(test_generator)
-
-print("Результат = ", accuracy[1])

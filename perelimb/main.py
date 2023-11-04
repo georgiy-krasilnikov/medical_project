@@ -31,7 +31,6 @@ def result(
             if true == "bolen":
                 count_bolen += 1  # счётчик ошибок "больных" (якобы здоровых)
                 show(pred2, prediction[0][0], img)  # здоров
-            show(pred2, prediction[0][0], img)
 
     print("Якобы здоровых: ", count_bolen)
     print("Якобы больных: ", count_zdorov)
@@ -43,7 +42,7 @@ def show(title, pred, img):  # функция показа результата 
     plt.show()
 
 
-model = load_model("perelimb_model.h5")
+model = load_model("perelimb_InceptionV3.h5")
 
 result("test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
 result("test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)

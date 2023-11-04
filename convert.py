@@ -29,28 +29,29 @@ def convert_images(dir, name):
         i += 1
         rename(dir + "/" + file, dir + "/" + new_name)
 
-# perelimb_train_zdorov_dir = listdir("perelimb/train/zdorov")
-# pereperelimb_train_bolen_dir = listdir("perelimb/train/bolen")
-# perelimb_test_zdorov_dir = listdir("perelimb/test/zdorov")
-# perelimb_test_bolen_dir = listdir("perelimb/test/bolen")
+perelimb_train_zdorov_dir = listdir("perelimb/train/zdorov")
+pereperelimb_train_bolen_dir = listdir("perelimb/train/bolen")
+perelimb_test_zdorov_dir = listdir("perelimb/test/zdorov")
+perelimb_test_bolen_dir = listdir("perelimb/test/bolen")
 
-# limb_train_dir = glob("limb/train/**/*.bmp", recursive=True)
-# limb_test_dir = glob("limb/test/**/*.bmp", recursive=True)
-# perelimb_train_dir = glob("perelimb/train/**/*.bmp", recursive=True)
-# perelimb_test_dir = glob("perelimb/test/**/*.bmp", recursive=True)
+limb_train_dir = glob("limb/train/**/*.bmp", recursive=True)
+limb_test_dir = glob("limb/test/**/*.bmp", recursive=True)
+perelimb_train_dir = glob("perelimb/train/**/*.bmp", recursive=True)
+perelimb_test_dir = glob("perelimb/test/**/*.bmp", recursive=True)
 
-# compress_img("norma_limb", "limb/zdorov")
-# compress_img("nenorma_limb", "limb/bolen")
+compress_img("norma_limb", "limb/zdorov")
+compress_img("nenorma_limb", "limb/bolen")
 
-# compress_img("norma_perelimb", "perelimb/zdorov")
-# compress_img("nenorma_perelimb", "perelimb/bolen")
+compress_img("norma_perelimb", "perelimb/zdorov")
+compress_img("nenorma_perelimb", "perelimb/bolen")
 
 convert_images("limb/zdorov", "zdorov.")
 convert_images("limb/bolen", "bolen.")
 convert_images("perelimb/zdorov", "zdorov.")
 convert_images("perelimb/bolen", "bolen.")
 
-# convert_images(perelimb_train_zdorov_dir, "zdorov.")
-# convert_images(perelimb_train_bolen_dir, "bolen.")
-# convert_images(perelimb_test_zdorov_dir, "zdorov.")
-# convert_images(perelimb_test_bolen_dir, "bolen.")
+convert_images(perelimb_train_zdorov_dir, "zdorov.")
+convert_images(perelimb_train_bolen_dir, "bolen.")
+convert_images(perelimb_test_zdorov_dir, "zdorov.")
+convert_images(perelimb_test_bolen_dir, "bolen.")
+

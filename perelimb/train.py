@@ -31,22 +31,22 @@ test_generator = test_datagen.flow_from_directory(
     class_mode="binary",
 )  # генератор для тестирования на контрольной выборке
 
-# inception = InceptionV3(
-#     include_top=False, input_shape=(img_width, img_height, 3)
-# )  # импорт модели InceptionV3
+inception = InceptionV3(
+    include_top=False, input_shape=(img_width, img_height, 3)
+)  # импорт модели InceptionV3
 
-# for layer in inception.layers:
-#     layer.trainable = False  # игнорируем слой для классификации изображений на ILSVRC
+for layer in inception.layers:
+    layer.trainable = False  # игнорируем слой для классификации изображений на ILSVRC
 
-# model = (
-#     Sequential()
-# )  # немного модифицируем нашу модель, добавляя несколько дополнительных слоёв
-# model.add(inception)
-# model.add(Flatten())
-# model.add(Dense(256, activation="relu"))
-# model.add(Dropout(0.5))
-# model.add(Dense(1, activation="sigmoid"))
-model = load_model("perelimb_model.h5")
+model = (
+    Sequential()
+)  # немного модифицируем нашу модель, добавляя несколько дополнительных слоёв
+model.add(inception)
+model.add(Flatten())
+model.add(Dense(256, activation="relu"))
+model.add(Dropout(0.5))
+model.add(Dense(1, activation="sigmoid"))
+
 model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 
 steps_per_epoch = (
@@ -54,9 +54,8 @@ steps_per_epoch = (
 )  # устанавливаем размеры шагом
 validation_steps = test_generator.n // test_generator.batch_size
 callback = ModelCheckpoint(
-    filepath="perelimb_model1.h5", monitor="val_accuracy", save_best_only=True
+    filepath="perelimb_InceptionV3.h5", monitor="val_accuracy", save_best_only=True
 )
-
 
 model.fit(
     train_generator,
@@ -66,7 +65,3 @@ model.fit(
     validation_steps=validation_steps,
     callbacks=callback,
 )
-
-accuracy = model.evaluate(test_generator)
-
-print("Результат = ", accuracy[1])
