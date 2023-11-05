@@ -22,4 +22,10 @@ CREATE TABLE perelimb_train (
     info VARCHAR(32) NOT NULL
 );
 
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    login VARCHAR(32) NOT NULL,
+    password VARCHAR(32) NOT NULL
+);
+
 

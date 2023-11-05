@@ -42,3 +42,6 @@ INSERT INTO perelimb_test (
   $1, $2
 );
 
+-- name: GetUsers :many
+SELECT * FROM users; 
+

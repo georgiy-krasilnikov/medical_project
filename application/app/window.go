@@ -1,11 +1,13 @@
 package app
 
 import (
+	"application/db"
 	"net/url"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -46,10 +48,10 @@ func (h *Handler) MainWindow() (fyne.Window, error) {
 	return w, nil
 }
 
-func (h *Handler) Authentication() (fyne.Window, error) {
+func (h *Handler) Authentication() fyne.Window {
 	w := h.a.NewWindow("Вход в систему")
 	w.SetIcon(icon)
-	w.Resize(fyne.NewSize(300, 300))
+	w.Resize(fyne.NewSize(300, 200))
 
 	login, password := widget.NewEntry(), widget.NewPasswordEntry()
 	label1, label2 := widget.NewLabel("Введите логин:"), widget.NewLabel("Введите пароль:")
@@ -59,12 +61,22 @@ func (h *Handler) Authentication() (fyne.Window, error) {
 		login,
 		label2,
 		password,
-		),
-	)
+		widget.NewButton("Войти", func() {
+			ok, err := h.CheckUser(db.User{
+				Login: login.Text,
+				Password: password.Text,
+			})
+
+			if err != nil || !ok {
+				dialog.ShowInformation("Вас нет в системе!", "Отказано в доступе", w)
+			} else {
+				
+			}
+		}),
+	))
 
 	w.Show()
 
-
-	return nil, nil
+	return nil
 }
 
