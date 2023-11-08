@@ -7,7 +7,7 @@ from typing import AsyncIterator, Iterator
 import sqlalchemy
 import sqlalchemy.ext.asyncio
 
-from db import models
+from models import User
 
 
 GET_TEST_IMAGES_FROM_LIMB = """-- name: get_test_images_from_limb \\:many
@@ -75,7 +75,7 @@ INSERT INTO perelimb_train (
 """
 
 
-class Querier:
+class Queries:
     def __init__(self, conn: sqlalchemy.engine.Connection):
         self._conn = conn
 
@@ -99,10 +99,10 @@ class Querier:
         for row in result:
             yield row[0]
 
-    def get_users(self) -> Iterator[models.User]:
+    def get_users(self) -> Iterator[User]:
         result = self._conn.execute(sqlalchemy.text(GET_USERS))
         for row in result:
-            yield models.User(
+            yield User(
                 id=row[0],
                 login=row[1],
                 password=row[2],
@@ -121,7 +121,7 @@ class Querier:
         self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
 
 
-class AsyncQuerier:
+class AsyncQueries:
     def __init__(self, conn: sqlalchemy.ext.asyncio.AsyncConnection):
         self._conn = conn
 
@@ -145,10 +145,10 @@ class AsyncQuerier:
         async for row in result:
             yield row[0]
 
-    async def get_users(self) -> AsyncIterator[models.User]:
+    async def get_users(self) -> AsyncIterator[User]:
         result = await self._conn.stream(sqlalchemy.text(GET_USERS))
         async for row in result:
-            yield models.User(
+            yield User(
                 id=row[0],
                 login=row[1],
                 password=row[2],
