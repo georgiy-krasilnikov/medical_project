@@ -44,31 +44,19 @@ def show(title, pred, img):  # функция показа результата 
 
 model = load_model("limb_InceptionV3.h5")
 
-result("limb/test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
-result("limb/test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
+result("test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
+result("test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
 
-model = load_model("perelimb_InceptionV3.h5")
-
-result("perelimb/test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
-result("perelimb/test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
 
 model = load_model("limb_Xception.h5")
 
-result("limb/test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
-result("limb/test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
+result("test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
+result("test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
 
-model = load_model("perelimb_Xception.h5")
-
-result("perelimb/test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
-result("perelimb/test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
 
 model = load_model("limb_InceptionResNetV2.h5")
 
-result("limb/test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
-result("limb/test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
+result("test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
+result("test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
 
-model = load_model("perelimb_InceptionResNetV2.h5")
-
-result("perelimb/test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
-result("perelimb/test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
 

@@ -1,7 +1,7 @@
 from db import db
 
 def check_user(dict) -> bool:
-    login = dict['login0']
+    login = dict['login']
     password = dict['password']
     users = list(db.get_users())
     

@@ -2,7 +2,7 @@ from os import listdir
 
 import matplotlib.pyplot as plt
 import keras.utils as image
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 
 def result(
@@ -42,7 +42,7 @@ def show(title, pred, img):  # функция показа результата 
     plt.show()
 
 
-model = load_model("perelimb_InceptionV3.h5")
+model = load_model("perelimb_InceptionResNetV2.h5")
 
 result("test/bolen", "bolen", "Патология -> ", "Якобы условная норма -> ", model)
 result("test/zdorov", "zdorov", "Якобы патология -> ", "Условная норма -> ", model)
