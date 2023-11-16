@@ -3,33 +3,15 @@
 #   sqlc v1.23.0
 import dataclasses
 
-
 @dataclasses.dataclass()
-class LimbTest:
+class Image:
     id: int
-    img: memoryview
+    img: bytes
     info: str
 
-
-@dataclasses.dataclass()
-class LimbTrain:
-    id: int
-    img: memoryview
-    info: str
-
-
-@dataclasses.dataclass()
-class PerelimbTest:
-    id: int
-    img: memoryview
-    info: str
-
-
-@dataclasses.dataclass()
-class PerelimbTrain:
-    id: int
-    img: memoryview
-    info: str
+    def __init__(self, img, info):
+        self.img = img
+        self.info = info
 
 
 @dataclasses.dataclass()
@@ -37,3 +19,7 @@ class User:
     id: int
     login: str
     password: str
+
+    def __init__(self, login, password):
+        self.login = login
+        self.password = password

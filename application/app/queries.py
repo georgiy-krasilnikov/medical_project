@@ -6,8 +6,9 @@ from typing import AsyncIterator, Iterator
 
 import sqlalchemy
 import sqlalchemy.ext.asyncio
+from psycopg2 import Binary
 
-from models import User
+from models import User, Image
 
 
 GET_TEST_IMAGES_FROM_LIMB = """-- name: get_test_images_from_limb \\:many
@@ -38,10 +39,17 @@ GET_USERS = """-- name: get_users \\:many
 SELECT id, login, password FROM users
 """
 
+CREATE_USERS = """-- name: create_users\\:exec
+INSERT INTO users (
+    login, password
+) VALUES (
+  :p1, :p2
+)
+"""
 
 INPUT_TEST_IMAGES_TO_LIMB = """-- name: input_test_images_to_limb \\:exec
 INSERT INTO limb_test (
-    img, info
+    img.img, info
 ) VALUES (
   :p1, :p2
 )
@@ -50,7 +58,7 @@ INSERT INTO limb_test (
 
 INPUT_TEST_IMAGES_TO_PERELIMB = """-- name: input_test_images_to_perelimb \\:exec
 INSERT INTO perelimb_test (
-    img, info
+    img.img, info
 ) VALUES (
   :p1, :p2
 )
@@ -59,7 +67,7 @@ INSERT INTO perelimb_test (
 
 INPUT_TRAIN_IMAGES_TO_LIMB = """-- name: input_train_images_to_limb \\:exec
 INSERT INTO limb_train (
-    img, info
+    img.img, info
 ) VALUES (
   :p1, :p2
 )
@@ -68,7 +76,7 @@ INSERT INTO limb_train (
 
 INPUT_TRAIN_IMAGES_TO_PERELIMB = """-- name: input_train_images_to_perelimb \\:exec
 INSERT INTO perelimb_train (
-    img, info
+    img.img, info
 ) VALUES (
   :p1, :p2
 )
@@ -79,22 +87,22 @@ class Queries:
     def __init__(self, conn: sqlalchemy.engine.Connection):
         self._conn = conn
 
-    def get_test_images_from_limb(self, *, info: str) -> Iterator[memoryview]:
+    def get_test_images_from_limb(self, *, info: str) -> Iterator[bytes]:
         result = self._conn.execute(sqlalchemy.text(GET_TEST_IMAGES_FROM_LIMB), {"p1": info})
         for row in result:
             yield row[0]
 
-    def get_test_images_from_perelimb(self, *, info: str) -> Iterator[memoryview]:
+    def get_test_images_from_perelimb(self, *, info: str) -> Iterator[bytes]:
         result = self._conn.execute(sqlalchemy.text(GET_TEST_IMAGES_FROM_PERELIMB), {"p1": info})
         for row in result:
             yield row[0]
 
-    def get_train_images_from_limb(self, *, info: str) -> Iterator[memoryview]:
+    def get_train_images_from_limb(self, *, info: str) -> Iterator[bytes]:
         result = self._conn.execute(sqlalchemy.text(GET_TRAIN_IMAGES_FROM_LIMB), {"p1": info})
         for row in result:
             yield row[0]
 
-    def get_train_images_from_perelimb(self, *, info: str) -> Iterator[memoryview]:
+    def get_train_images_from_perelimb(self, *, info: str) -> Iterator[bytes]:
         result = self._conn.execute(sqlalchemy.text(GET_TRAIN_IMAGES_FROM_PERELIMB), {"p1": info})
         for row in result:
             yield row[0]
@@ -103,65 +111,27 @@ class Queries:
         result = self._conn.execute(sqlalchemy.text(GET_USERS))
         for row in result:
             yield User(
-                id=row[0],
                 login=row[1],
                 password=row[2],
             )
+            
+    def create_users(self, *, u=User) -> None:
+        self._conn.execute(sqlalchemy.text(CREATE_USERS), {"p1": u.login, "p2": u.password})
+        self._conn.commit()
 
-    def input_test_images_to_limb(self, *, img: memoryview, info: str) -> None:
-        self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_LIMB), {"p1": img, "p2": info})
+    def input_test_images_to_limb(self, *, img=Image) -> None:
+        self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_LIMB), {"p1": img.img, "p2": img.info})
+        self._conn.commit()
 
-    def input_test_images_to_perelimb(self, *, img: memoryview, info: str) -> None:
-        self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
+    def input_test_images_to_perelimb(self, *, img=Image) -> None:
+        self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_PERELIMB), {"p1": img.img, "p2": img.info})
+        self._conn.commit()
 
-    def input_train_images_to_limb(self, *, img: memoryview, info: str) -> None:
-        self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_LIMB), {"p1": img, "p2": info})
+    def input_train_images_to_limb(self, *, img=Image) -> None:
+        self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_LIMB), {"p1": img.img, "p2": img.info})
+        self._conn.commit()
 
-    def input_train_images_to_perelimb(self, *, img: memoryview, info: str) -> None:
-        self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
+    def input_train_images_to_perelimb(self, *, img=Image) -> None:
+        self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_PERELIMB), {"p1": img.img, "p2": img.info})
+        self._conn.commit()
 
-
-class AsyncQueries:
-    def __init__(self, conn: sqlalchemy.ext.asyncio.AsyncConnection):
-        self._conn = conn
-
-    async def get_test_images_from_limb(self, *, info: str) -> AsyncIterator[memoryview]:
-        result = await self._conn.stream(sqlalchemy.text(GET_TEST_IMAGES_FROM_LIMB), {"p1": info})
-        async for row in result:
-            yield row[0]
-
-    async def get_test_images_from_perelimb(self, *, info: str) -> AsyncIterator[memoryview]:
-        result = await self._conn.stream(sqlalchemy.text(GET_TEST_IMAGES_FROM_PERELIMB), {"p1": info})
-        async for row in result:
-            yield row[0]
-
-    async def get_train_images_from_limb(self, *, info: str) -> AsyncIterator[memoryview]:
-        result = await self._conn.stream(sqlalchemy.text(GET_TRAIN_IMAGES_FROM_LIMB), {"p1": info})
-        async for row in result:
-            yield row[0]
-
-    async def get_train_images_from_perelimb(self, *, info: str) -> AsyncIterator[memoryview]:
-        result = await self._conn.stream(sqlalchemy.text(GET_TRAIN_IMAGES_FROM_PERELIMB), {"p1": info})
-        async for row in result:
-            yield row[0]
-
-    async def get_users(self) -> AsyncIterator[User]:
-        result = await self._conn.stream(sqlalchemy.text(GET_USERS))
-        async for row in result:
-            yield User(
-                id=row[0],
-                login=row[1],
-                password=row[2],
-            )
-
-    async def input_test_images_to_limb(self, *, img: memoryview, info: str) -> None:
-        await self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_LIMB), {"p1": img, "p2": info})
-
-    async def input_test_images_to_perelimb(self, *, img: memoryview, info: str) -> None:
-        await self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
-
-    async def input_train_images_to_limb(self, *, img: memoryview, info: str) -> None:
-        await self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_LIMB), {"p1": img, "p2": info})
-
-    async def input_train_images_to_perelimb(self, *, img: memoryview, info: str) -> None:
-        await self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
