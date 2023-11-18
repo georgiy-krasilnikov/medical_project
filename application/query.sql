@@ -45,3 +45,10 @@ INSERT INTO perelimb_test (
 -- name: GetUsers :many
 SELECT * FROM users; 
 
+-- name: CreateUsers :exec
+INSERT INTO users (
+    login, password
+) VALUES (
+  $1, $2
+);
+

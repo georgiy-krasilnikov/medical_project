@@ -5,7 +5,7 @@ import PySimpleGUI as sg
 from user import check_user, register_user
 from elements import layouts
 from classification import result
-from images import load_images
+from images import load_images, download_images
 
 sg.theme('SystemDefault1')
 
@@ -36,7 +36,7 @@ while True:
                 
             window.close()
             enter_window.close()
-            choice_window = sg.Window('Интеллектуальная система ЦТО', layouts[3], element_justification='c', size=(500, 350))
+            choice_window = sg.Window('Интеллектуальная система ЦТО', layouts[3], element_justification='c', size=(600, 450))
             event, values = choice_window.read()
             if event == 'variant1':
                 choice_window.close()
@@ -48,7 +48,7 @@ while True:
                         result(file_path, 'perelimb')
                     elif 'limb' in file_path:
                         result(file_path, 'limb')
-            else:
+            elif event == 'variant2':
                 choice_window.close()
                 load_window = sg.Window('Интеллектуальная система ЦТО', layouts[5], element_justification='c', size=(800, 600))
                 event, values = load_window.read()
@@ -64,6 +64,12 @@ while True:
                         info = 'zdorov'
                     load_images(values['Выбрать'], zone, sample, info)
                     sg.popup_ok('Загружено')
+            else:
+                choice_window.close()
+                download_window = sg.Window('Интеллектуальная система ЦТО', layouts[6], element_justification='c', size=(550, 300))
+                event, values = download_window.read()
+                if event == 'download':
+                    download_images(limb=values['limb'], perelimb=values['perelimb'])
             
     if event == sg.WIN_CLOSED:
         break

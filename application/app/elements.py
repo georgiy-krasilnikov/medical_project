@@ -45,7 +45,9 @@ layouts = [[
         [sg.Text('', font=font1)],
         [sg.Button('Классифицировать изображение', size=(18, 3), key='variant1')],
         [sg.Text('', font=font1)],
-        [sg.Button('Загрузить изображение в базу данных', size=(21, 3))],
+        [sg.Button('Загрузить изображение в базу данных', size=(21, 3), key='variant2')],
+        [sg.Text('', font=font1)],
+        [sg.Button('Выгрузить данные из базы данных', size=(18, 3))],
         [sg.Text('', font=font1)],
     ],
     [
@@ -72,6 +74,15 @@ layouts = [[
         [sg.Radio('Обучающая выборка', 'sample', key='train', font=font2)],
         [sg.Radio('Патология', 'info', key='bolen', font=font2)],
         [sg.Radio('Относительная норма', 'info', key='zdorov', font=font2)],
+        [sg.Text('', font=font1)],
+    ],
+    [
+        [sg.Text('', font=font1)],
+        [sg.Text('Выберите зону для выгрузки данных для обучения:', font=font2)],
+        [sg.Checkbox('Зона лимб', 'zone', key='limb', font=font2)],
+        [sg.Checkbox('Зона перелимб', 'zone', key='perelimb', font=font2)],
+        [sg.Text('', font=font1)],
+        [sg.Button('Выгрузить', size=(12, 2), key='download')],
         [sg.Text('', font=font1)],
     ]
     ]
