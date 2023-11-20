@@ -83,6 +83,7 @@ def download_images(limb=bool, perelimb=bool):
         save_images('limb_zone/train/zdorov', 'zdorov', train_zdorov_imgs)
 
     elif limb == False and perelimb == True:
+        mkdir('perelimb_zone')
         mkdir('perelimb_zone/train')
         mkdir('perelimb_zone/test')
         mkdir('perelimb_zone/train/bolen')
