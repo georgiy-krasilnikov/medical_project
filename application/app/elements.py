@@ -15,7 +15,7 @@ layouts = [[
         [sg.Text('', font=font1)],
         [sg.Button('Войти', size=(8, 2), key='click')],
         [sg.Text('', font=font1)],
-        [sg.Text('Перейти на сайт ЦТО', enable_events=True, key='https://oftal.ru/', font=font2)]
+        [sg.Text('Перейти на сайт ЦТО', enable_events=True, key='https://oftal.ru/', font=font2, text_color='blue')]
     ],
     [
         [sg.Text('', font=font1)],
@@ -41,13 +41,16 @@ layouts = [[
     ],
     [
         [sg.Text('', font=font1)],
-        [sg.Text('Выберите действие:', font=font2)],
+        [sg.Text('Выберите действие:', font=font1)],
         [sg.Text('', font=font1)],
-        [sg.Button('Классифицировать изображение', size=(18, 3), key='variant1')],
+        [sg.Text('Нажмите, если хотите классифицировать изображения и загрузить его в базу данных', font=font2)],
+        [sg.Button('Классифицировать и загрузить', size=(18, 3), key='variant1')],
         [sg.Text('', font=font1)],
-        [sg.Button('Загрузить изображение в базу данных', size=(21, 3), key='variant2')],
+        [sg.Text('Нажмите, если хотите загрузить изображения в базу данных для обучения', font=font2)],
+        [sg.Button('Загрузить', size=(12, 2), key='variant2')],
         [sg.Text('', font=font1)],
-        [sg.Button('Выгрузить данные из базы данных', size=(18, 3))],
+        [sg.Text('Нажмите, если хотите выгрузить изображения из базы данных для обучения', font=font2)],
+        [sg.Button('Выгрузить', size=(12, 2), key='variant3')],
         [sg.Text('', font=font1)],
     ],
     [
@@ -56,7 +59,9 @@ layouts = [[
         [sg.Text('', font=font1)],
         [sg.FilesBrowse(button_text='Выбрать', file_types=(('Изображения', '*.bmp'),))],
         [sg.Text('', font=font1)],
-        [sg.Button('Классифицировать', size=(15, 2), key='class')],
+        [sg.Radio('Зона лимб', 'zone', key='limb', font=font2)],
+        [sg.Radio('Зона перелимб', 'zone', key='perelimb', font=font2)],
+        [sg.Button('Классифицировать', size=(16, 2), key='class')],
         [sg.Text('', font=font1)],
     ],
     [

@@ -4,7 +4,6 @@ from io import BytesIO
 from PIL import Image as image
 
 from db import db
-from models import Image
 
 def read_bin(path):
     with open(path, "rb") as img:
@@ -14,16 +13,20 @@ def read_bin(path):
 
 def load_images(path, zone, sample, info):
     img = read_bin(path)
-
-    match (zone == 'limb', sample == 'train'):
-        case (True, True):
-            db.input_train_images_to_limb(img=img, info=info)
-        case (True, False):
-            db.input_test_images_to_limb(img=img, info=info)
-        case (False, True):
-            db.input_train_images_to_perelimb(img=img, info=info)
-        case (False, False):
-            db.input_test_images_to_perelimb(img=img, info=info)
+    if sample != None:
+        match (zone == 'limb', sample == 'train'):
+            case (True, True):
+                db.input_train_images_to_limb(img=img, info=info)
+            case (True, False):
+                db.input_test_images_to_limb(img=img, info=info)
+            case (False, True):
+                db.input_train_images_to_perelimb(img=img, info=info)
+            case (False, False):
+                db.input_test_images_to_perelimb(img=img, info=info)
+    elif zone == 'limb':
+        db.input_images_to_limb(img=img, info=info)
+    else:
+        db.input_images_to_perelimb(img=img, info=info)
 
 def download_images(limb=bool, perelimb=bool):
     if limb == True and perelimb == True:

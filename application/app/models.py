@@ -3,16 +3,14 @@
 #   sqlc v1.23.0
 import dataclasses
 
-@dataclasses.dataclass()
-class Image:
-    id: int
-    img: bytes
-    info: str
+from tensorflow.keras.models import load_model
 
-    def __init__(self, img, info):
-        self.img = img
-        self.info = info
-
+limb_InceptionV3 = load_model('/home/_georgiy/_georgiy@laptop360/Универ/5 семестр 2023 3 курс/Медицинский проект 3 курс/medical_project/models/limb_InceptionV3.h5')
+limb_Xception = load_model('/home/_georgiy/_georgiy@laptop360/Универ/5 семестр 2023 3 курс/Медицинский проект 3 курс/medical_project/models/limb_Xception.h5')
+limb_InceptionResNetV2 = load_model('/home/_georgiy/_georgiy@laptop360/Универ/5 семестр 2023 3 курс/Медицинский проект 3 курс/medical_project/models/limb_InceptionResNetV2.h5')
+# perelimb_InceptionV3 = load_model('/home/_georgiy/_georgiy@laptop360/Универ/5 семестр 2023 3 курс/Медицинский проект 3 курс/medical_project/models/perelimb_InceptionV3.h5')
+# perelimb_Xception = load_model('/home/_georgiy/_georgiy@laptop360/Универ/5 семестр 2023 3 курс/Медицинский проект 3 курс/medical_project/models/perelimb_Xception.h5')
+# perelimb_InceptionResNetV2 = load_model('/home/_georgiy/_georgiy@laptop360/Универ/5 семестр 2023 3 курс/Медицинский проект 3 курс/medical_project/models/perelimb_InceptionResNetV2.h5')
 
 @dataclasses.dataclass()
 class User:
@@ -23,3 +21,4 @@ class User:
     def __init__(self, login, password):
         self.login = login
         self.password = password
+

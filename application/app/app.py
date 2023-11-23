@@ -37,10 +37,13 @@ while True:
                     while event != sg.WIN_CLOSED:
                         if event == 'class':
                             file_path = values['Выбрать']
-                            if 'perelimb' in file_path:
-                                result(file_path, 'perelimb')
-                            elif 'limb' in file_path:
-                                result(file_path, 'limb')
+                            zone = 'limb'
+                            if values['perelimb'] == True:
+                                zone = 'perelimb'
+                                res = result(file_path, 'perelimb')
+                            else:
+                                res = result(file_path, 'limb')
+                            load_images(file_path, zone, None, res)
                             event, values = class_window.read()
                 elif event == 'variant2':
                     event, values = load_window.read()
@@ -58,7 +61,7 @@ while True:
                         load_images(values['Выбрать'], zone, sample, info)
                         sg.popup('Загружено', no_titlebar=True, auto_close_duration=2, auto_close=True)
                         event, values = load_window.read()
-                else:
+                elif event == 'variant3':
                     event, values = download_window.read()
                     while event != sg.WIN_CLOSED:
                         if event == 'download':

@@ -28,4 +28,31 @@ CREATE TABLE users (
     password VARCHAR(32) NOT NULL
 );
 
+CREATE TABLE limb (
+    id SERIAL PRIMARY KEY,
+    img BYTEA NOT NULL,
+    info VARCHAR(32)         
+);
+
+CREATE TABLE perelimb (
+    id SERIAL PRIMARY KEY,
+    img BYTEA NOT NULL,
+    info VARCHAR(32)         
+);
+
+CREATE TABLE limb (
+    id SERIAL PRIMARY KEY,
+    img BYTEA NOT NULL,
+    info VARCHAR(32)         
+);
+
+CREATE TABLE perelimb (
+    id SERIAL PRIMARY KEY,
+    img BYTEA NOT NULL,
+    info VARCHAR(32)         
+);
+
+
+
+
 

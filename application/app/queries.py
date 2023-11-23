@@ -6,9 +6,8 @@ from typing import AsyncIterator, Iterator
 
 import sqlalchemy
 import sqlalchemy.ext.asyncio
-from psycopg2 import Binary
 
-from models import User, Image
+from models import User
 
 
 GET_TEST_IMAGES_FROM_LIMB = """-- name: get_test_images_from_limb \\:many
@@ -35,9 +34,28 @@ WHERE info = :p1
 """
 
 
+INPUT_IMAGES_TO_LIMB = """-- name: input_images_to_limb \\:exec
+INSERT INTO limb (
+    img, info
+) VALUES (
+  :p1, :p2
+)
+"""
+
+
+INPUT_IMAGES_TO_PERELIMB = """-- name: input_images_to_perelimb \\:exec
+INSERT INTO perelimb (
+    img, info
+) VALUES (
+  :p1, :p2
+)
+"""
+
+
 GET_USERS = """-- name: get_users \\:many
 SELECT id, login, password FROM users
 """
+
 
 CREATE_USERS = """-- name: create_users \\:exec
 INSERT INTO users (
@@ -107,6 +125,14 @@ class Queries:
         for row in result:
             yield row[0]
 
+    def input_images_to_limb(self, img: bytes, info: str) -> None:
+        self._conn.execute(sqlalchemy.text(INPUT_IMAGES_TO_LIMB), {"p1": img, "p2": info})
+        self._conn.commit()
+
+    def input_images_to_perelimb(self, img: bytes) -> None:
+        self._conn.execute(sqlalchemy.text(INPUT_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
+        self._conn.commit()
+
     def get_users(self) -> Iterator[User]:
         result = self._conn.execute(sqlalchemy.text(GET_USERS))
         for row in result:
@@ -115,23 +141,23 @@ class Queries:
                 password=row[2],
             )
             
-    def create_users(self, u=User) -> None:
+    def create_users(self, u: User) -> None:
         self._conn.execute(sqlalchemy.text(CREATE_USERS), {"p1": u.login, "p2": u.password})
         self._conn.commit()
 
-    def input_test_images_to_limb(self, img=bytes, info=str) -> None:
+    def input_test_images_to_limb(self, img: bytes, info: str) -> None:
         self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_LIMB), {"p1": img, "p2": info})
         self._conn.commit()
 
-    def input_test_images_to_perelimb(self, img=bytes, info=str) -> None:
+    def input_test_images_to_perelimb(self, img: bytes, info: str) -> None:
         self._conn.execute(sqlalchemy.text(INPUT_TEST_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
         self._conn.commit()
 
-    def input_train_images_to_limb(self, img=bytes, info=str) -> None:
+    def input_train_images_to_limb(self, img: bytes, info: str) -> None:
         self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_LIMB), {"p1": img, "p2": info})
         self._conn.commit()
 
-    def input_train_images_to_perelimb(self, img=bytes, info=str) -> None:
+    def input_train_images_to_perelimb(self, img: bytes, info: str) -> None:
         self._conn.execute(sqlalchemy.text(INPUT_TRAIN_IMAGES_TO_PERELIMB), {"p1": img, "p2": info})
         self._conn.commit()
 

@@ -42,6 +42,20 @@ INSERT INTO perelimb_test (
   $1, $2
 );
 
+-- name: InputImagesToLimb :exec
+INSERT INTO limb (
+    img, info
+) VALUES (
+  $1, $2
+);
+
+-- name: InputImagesToPerelimb :exec
+INSERT INTO perelimb (
+    img, info
+) VALUES (
+  $1, $2
+);
+
 -- name: GetUsers :many
 SELECT * FROM users; 
 
